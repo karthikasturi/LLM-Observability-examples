@@ -1,0 +1,16 @@
+# Core LangChain dependencies
+langchain-openai==1.1.0
+langchain-core==1.1.0
+langchain-community==0.4.1
+
+# OpenAI SDK
+openai==2.8.1
+
+# Environment variable management
+python-dotenv==1.2.1
+
+# Prometheus metrics (for Stage 6)
+prometheus-client==0.23.1
+
+# Retry logic utilities
+tenacity==9.1.2
