@@ -1,230 +1,132 @@
 # Quick Start Guide
 
-## Project Overview
+Get started with LangSmith observability in 5 minutes!
 
-This project demonstrates LLM observability use cases in a step-by-step manner using LangChain and OpenAI.
+## Setup (2 minutes)
 
-## Prerequisites
-
-- Python 3.8 or higher
-- OpenAI API key
-- Basic understanding of Python and LLMs
-
-## Setup Instructions
-
-### 1. Navigate to the project directory
+### 1. Install Dependencies
 
 ```bash
-cd LLM-Observability-examples
-```
-
-### 2. Create and activate virtual environment
-
-```bash
-# Create virtual environment
+# Create and activate virtual environment
 python3 -m venv venv
+source venv/bin/activate  # Linux/Mac
+# or: venv\Scripts\activate  # Windows
 
-# Activate (Linux/Mac)
-source venv/bin/activate
-
-# Or activate (Windows)
-# venv\Scripts\activate
+# Install packages
+pip install -r requirements.txt
 ```
 
-### 3. Install dependencies
+### 2. Get API Keys
 
+**OpenAI:**
+1. Go to https://platform.openai.com/api-keys
+2. Click "Create new secret key"
+3. Copy the key
+
+**LangSmith:**
+1. Go to https://smith.langchain.com/
+2. Sign up (free tier available)
+3. Go to Settings → API Keys
+4. Create and copy your API key
+
+### 3. Configure Environment
+
+```bash
+# Copy the example file
+cp .env.example .env
+
+# Edit .env and paste your keys:
+# OPENAI_API_KEY=sk-...
+# LANGSMITH_API_KEY=lsv2_...
+# LANGSMITH_PROJECT=llm-observability-demo
+```
+
+## Run Your First Example (3 minutes)
+
+### Stage 1: Basic Chatbot
+
+```bash
+python step1_basic_chatbot.py
+```
+
+This runs a simple chatbot with no observability. Type messages and get responses!
+
+### Stage 2: Prompt Templates
+
+```bash
+python step2_prompt_template.py
+```
+
+Learn how to use prompt templates and chains. See how variables work in prompts!
+
+### Stage 3: Enable Tracing
+
+```bash
+python step3_langsmith_tracing.py
+```
+
+Now every interaction is traced! Go to https://smith.langchain.com/ to see:
+- All your LLM calls
+- Input prompts
+- Output responses
+- Token usage
+- Latency
+
+### Stage 7: Full Features
+
+```bash
+python step7_full_chatbot.py
+```
+
+Complete chatbot with:
+- ✅ Automatic tracing
+- ✅ Custom metadata
+- ✅ LLM evaluation
+- ✅ Full observability
+
+## View Your Traces
+
+1. Open https://smith.langchain.com/
+2. Select your project (`llm-observability-demo`)
+3. Browse all your traces
+4. Click on any trace to see details
+5. Compare runs and analyze performance
+
+## Next Steps
+
+Work through all 7 stages to learn:
+- Stage 1: Basic chatbot
+- Stage 2: Prompt templates
+- Stage 3: LangSmith tracing
+- Stage 4: Metadata & tags
+- Stage 5: LLM-as-a-judge evaluation
+- Stage 6: Dataset testing
+- Stage 7: Complete integration
+
+Read the full [README.md](README.md) for detailed explanations!
+
+## Troubleshooting
+
+**"Module not found" errors?**
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Configure API key
+**Not seeing traces in LangSmith?**
+- Check your `.env` file has the correct `LANGSMITH_API_KEY`
+- Verify `LANGSMITH_PROJECT` is set
+- Make sure you're running stage 3 or later
 
-```bash
-# Copy the example environment file
-cp .env.example .env
+**OpenAI errors?**
+- Verify your `OPENAI_API_KEY` is correct
+- Check you have API credits
+- Ensure your key is active
 
-# Edit .env and add your OpenAI API key
-# OPENAI_API_KEY=sk-your-actual-api-key-here
-```
+## Resources
 
-## Running the Stages
+- **LangSmith:** https://smith.langchain.com/
+- **LangSmith Docs:** https://docs.smith.langchain.com/
+- **LangChain Docs:** https://python.langchain.com/
+- **OpenAI API:** https://platform.openai.com/docs
 
-Execute the files in order to learn each concept:
-
-### Stage 1: Basic Chatbot
-```bash
-python step1_basic_chatbot.py
-```
-**Learn:** LangChain + OpenAI basics, simple prompt → response flow
-
-### Stage 2: Prompt Templates
-```bash
-python step2_prompt_template.py
-```
-**Learn:** PromptTemplate usage, chain building, variable substitution
-
-### Stage 3: Basic Callback
-```bash
-python step3_basic_callback.py
-```
-**Learn:** Custom callbacks, capturing prompts/responses, token tracking, latency measurement
-
-### Stage 4: Cost Tracking
-```bash
-python step4_cost_tracking.py
-```
-**Learn:** Token usage analysis, cost calculation, budget projection
-
-### Stage 5: Error Handling
-```bash
-python step5_error_handling.py
-```
-**Learn:** Retry logic, exponential backoff, error tracking, reliability patterns
-
-### Stage 6: Prometheus Metrics
-```bash
-python step6_prometheus_metrics.py
-```
-**Learn:** Metrics export, Prometheus integration, monitoring setup
-
-Access metrics at: `http://localhost:8000/metrics`
-
-### Stage 7: Final Integration
-```bash
-python step7_final_chatbot.py
-```
-**Learn:** Complete chatbot with all observability features integrated
-
-## Architecture Overview
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    User Application                          │
-├─────────────────────────────────────────────────────────────┤
-│  ┌────────────┐  ┌────────────┐  ┌────────────┐            │
-│  │  Prompt    │→ │    LLM     │→ │   Output   │            │
-│  │  Template  │  │   Chain    │  │   Parser   │            │
-│  └────────────┘  └────────────┘  └────────────┘            │
-│         ↓              ↓               ↓                     │
-│  ┌──────────────────────────────────────────────┐          │
-│  │         Callback Handler (Observability)      │          │
-│  │  • Token Tracking   • Cost Calculation        │          │
-│  │  • Latency Metrics  • Error Tracking          │          │
-│  └──────────────────────────────────────────────┘          │
-│         ↓                                                    │
-│  ┌──────────────────────────────────────────────┐          │
-│  │        Prometheus Metrics Exporter            │          │
-│  │  Counter, Histogram, Gauge metrics            │          │
-│  └──────────────────────────────────────────────┘          │
-└─────────────────────────────────────────────────────────────┘
-         ↓                           ↓
-┌─────────────────┐        ┌─────────────────┐
-│   Prometheus    │        │     Grafana     │
-│  (Metrics DB)   │   →    │  (Visualization) │
-└─────────────────┘        └─────────────────┘
-```
-
-## Key Observability Metrics
-
-| Metric | Type | Description |
-|--------|------|-------------|
-| `llm_request_count` | Counter | Total requests (by model and status) |
-| `llm_request_duration_seconds` | Histogram | Latency distribution |
-| `llm_tokens_total` | Counter | Token usage (prompt vs completion) |
-| `llm_cost_usd_total` | Gauge | Cumulative estimated cost |
-| `llm_error_count` | Counter | Errors by type |
-| `llm_session_duration_seconds` | Gauge | Session duration |
-
-## Prometheus Configuration
-
-Add this to your `prometheus.yml`:
-
-```yaml
-scrape_configs:
-  - job_name: 'llm-chatbot'
-    scrape_interval: 15s
-    static_configs:
-      - targets: ['localhost:8000']
-```
-
-## Grafana Dashboard Queries
-
-### Request Rate
-```promql
-rate(llm_request_count{status="success"}[5m])
-```
-
-### P95 Latency
-```promql
-histogram_quantile(0.95, rate(llm_request_duration_seconds_bucket[5m]))
-```
-
-### Token Usage Rate
-```promql
-rate(llm_tokens_total[5m])
-```
-
-### Error Rate
-```promql
-rate(llm_request_count{status="error"}[5m])
-```
-
-### Total Cost
-```promql
-llm_cost_usd_total
-```
-
-## Production Deployment Checklist
-
-- [ ] Set up Prometheus scraping
-- [ ] Configure Grafana dashboards
-- [ ] Set up alerting rules (high latency, error rate, cost thresholds)
-- [ ] Implement rate limiting
-- [ ] Add authentication/authorization
-- [ ] Configure retry policies
-- [ ] Set up logging aggregation
-- [ ] Implement circuit breakers
-- [ ] Add health check endpoints
-- [ ] Set up cost budgets and alerts
-
-## Troubleshooting
-
-### "OPENAI_API_KEY not found"
-- Ensure `.env` file exists in the project directory
-- Check that the API key is correctly formatted
-- Verify the `.env` file is in the same directory as the script
-
-### "Import could not be resolved"
-- Make sure virtual environment is activated
-- Run `pip install -r requirements.txt` again
-- Check Python version (3.8+ required)
-
-### "Port 8000 already in use"
-- Change the port in step6 or step7 scripts
-- Or stop the process using port 8000
-
-### High costs
-- Use `gpt-3.5-turbo` instead of `gpt-4`
-- Reduce `max_tokens` parameter
-- Implement caching for common queries
-- Set daily/monthly cost limits
-
-## Next Steps
-
-1. **Integrate with your application:** Use these patterns in your production LLM app
-2. **Set up monitoring:** Deploy Prometheus and Grafana
-3. **Add custom metrics:** Track domain-specific metrics
-4. **Implement alerting:** Set up alerts for SLO violations
-5. **Optimize costs:** Use insights to reduce token usage
-6. **Scale:** Deploy to cloud infrastructure
-
-## Additional Resources
-
-- [LangChain Documentation](https://python.langchain.com/)
-- [OpenAI API Reference](https://platform.openai.com/docs/api-reference)
-- [Prometheus Documentation](https://prometheus.io/docs/)
-- [Grafana Documentation](https://grafana.com/docs/)
-
-## License
-
-MIT
+Happy tracing! 🚀
